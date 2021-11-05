@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:9.6.23
+    restart: always
+    networks:
+      - network
+    env_file:
+      - ./.env
+    ports:
+      - 5433:5432
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:6
+    restart: always
+    networks:
+      - network
+    env_file:
+      - ./.env
+    ports:
+      - 5556:80
+    depends_on:
+      - db
+
+networks:
+  network: {}

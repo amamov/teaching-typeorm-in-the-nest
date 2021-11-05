@@ -13,7 +13,7 @@ const typeOrmModuleOptions = {
   ): Promise<TypeOrmModuleOptions> => ({
     namingStrategy: new SnakeNamingStrategy(),
     type: 'postgres',
-    host: configService.get('DB_HOST'),
+    host: configService.get('DB_HOST'), // process.env.DB_HOST
     port: configService.get('DB_PORT'),
     username: configService.get('DB_USERNAME'),
     password: configService.get('DB_PASSWORD'),

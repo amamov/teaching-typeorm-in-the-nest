@@ -10,7 +10,7 @@ import { UsersService } from './users.service'
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
-    PassportModule.register({ defaultStrategy: 'jwt', session: true }),
+    PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     JwtModule.register({
       secret: process.env.SECRET_KEY,
       secretOrPrivateKey: process.env.SECRET_KEY,

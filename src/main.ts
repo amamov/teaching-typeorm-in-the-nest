@@ -9,14 +9,14 @@ import * as cookieParser from 'cookie-parser'
 import { HttpApiExceptionFilter } from './common/exceptions/http-api-exception.filter'
 
 class Application {
-  protected logger = new Logger(Application.name)
-  protected DEV_MODE: boolean
-  protected PORT: string
+  private logger = new Logger(Application.name)
+  private DEV_MODE: boolean
+  private PORT: string
   private corsOriginList: string[]
   private ADMIN_USER: string
   private ADMIN_PASSWORD: string
 
-  constructor(protected server: NestExpressApplication) {
+  constructor(private server: NestExpressApplication) {
     this.server = server
 
     if (!process.env.SECRET_KEY) this.logger.error('Set "SECRET" env')

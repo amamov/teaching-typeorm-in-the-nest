@@ -1,5 +1,5 @@
 import { JwtPayload } from './jwt.payload'
-import { UsersService } from './../users.service'
+import { UsersService } from '../users.service'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { PassportStrategy } from '@nestjs/passport'
 import { Injectable, UnauthorizedException } from '@nestjs/common'
@@ -20,11 +20,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    const user = await this.usersService.findUserById(payload.sub)
-    if (user) {
-      return user
-    } else {
-      throw new UnauthorizedException('')
+    try {
+      const user = await this.usersService.findUserById(payload.sub)
+      if (user) {
+        return user
+      } else {
+        throw new Error('해당하는 유저는 없습니다.')
+      }
+    } catch (error) {
+      throw new UnauthorizedException(error)
     }
   }
 }

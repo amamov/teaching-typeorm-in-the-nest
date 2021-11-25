@@ -1,6 +1,10 @@
-import { NestFactory } from '@nestjs/core'
+import { NestFactory, Reflector } from '@nestjs/core'
 import { AppModule } from './app.module'
-import { Logger, ValidationPipe } from '@nestjs/common'
+import {
+  ClassSerializerInterceptor,
+  Logger,
+  ValidationPipe,
+} from '@nestjs/common'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import * as expressBasicAuth from 'express-basic-auth'
@@ -71,7 +75,9 @@ class Application {
     )
     this.server.use(passport.initialize())
     this.server.use(passport.session())
-
+    this.server.useGlobalInterceptors(
+      new ClassSerializerInterceptor(this.server.get(Reflector)),
+    )
     this.server.useGlobalFilters(new HttpApiExceptionFilter())
   }
 

@@ -38,16 +38,21 @@ export class UsersController {
   }
 
   @Post()
-  async signUp(@Body() body: UserRegisterDTO) {
-    return this.usersService.registerUser(body)
+  async signUp(@Body() userRegisterDTO: UserRegisterDTO) {
+    return await this.usersService.registerUser(userRegisterDTO)
   }
 
   @Post('login')
   async logIn(
-    @Body() body: UserLogInDTO,
+    @Body() userLoginDTO: UserLogInDTO,
     @Res({ passthrough: true }) response: Response,
   ) {
-    return await this.usersService.logIn(body, response)
+    const { jwt, user } = await this.usersService.verifyUserAndSignJwt(
+      userLoginDTO.email,
+      userLoginDTO.password,
+    )
+    response.cookie('jwt', jwt, { httpOnly: true })
+    return user
   }
 
   @Post('logout')
